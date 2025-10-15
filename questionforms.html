@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>English 4th Year – Subject/Object Questions + Question Tags</title>
+<style>
+  :root{
+    --brand-red:#E02828;
+    --brand-gray:#555A60;
+    --ok:#18a957;
+    --bad:#d21f3c;
+    --light:#f6f7f9;
+  }
+  html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#fff;color:#111}
+  header{padding:1rem 1.2rem;border-bottom:2px solid var(--light);display:flex;flex-wrap:wrap;gap:.75rem;align-items:end;justify-content:space-between}
+  h1{font-size:1.2rem;margin:.25rem 0;color:var(--brand-gray)}
+  .brand{font-weight:700;color:var(--brand-red)}
+  .grid{display:grid;gap:1rem}
+  .wrap{max-width:1100px;margin:0 auto;padding:1rem}
+  .card{background:#fff;border:1px solid #e8eaef;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);padding:1rem}
+  .row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
+  label{font-size:.9rem;color:var(--brand-gray)}
+  input[type="text"], input[type="url"]{padding:.55rem .65rem;border-radius:10px;border:1px solid #d8dbe2;min-width:18ch;max-width:100%;font-size:1rem}
+  input.answer{min-width:28ch}
+  input.tag{min-width:16ch}
+  .controls{display:flex;gap:.5rem;flex-wrap:wrap}
+  button{border:0;border-radius:12px;padding:.7rem 1rem;font-weight:700;cursor:pointer}
+  .primary{background:var(--brand-red);color:#fff}
+  .ghost{background:#f1f2f6;color:#222}
+  .muted{background:#eceff4;color:#222}
+  .pill{font-size:.85rem;color:#222;background:#f2f4f7;padding:.35rem .6rem;border-radius:999px;border:1px solid #e4e7ec}
+  .timer{font-variant-numeric:tabular-nums}
+  .exercise{border-top:1px dashed #e6e8ee;padding-top:.75rem;margin-top:.5rem}
+  .qnum{display:inline-block;width:3ch;color:#666}
+  .prompt{font-weight:600}
+  .note{color:#555}
+  .tick{font-weight:900;margin-left:.35rem}
+  .ok{color:var(--ok)}
+  .bad{color:var(--bad)}
+  details.solutions{margin-top:1rem}
+  summary{cursor:pointer}
+  .solutions pre{background:#0f172a;border-radius:10px;color:#f1f5f9;padding:.75rem;overflow:auto}
+  .stats{display:flex;gap:1rem;flex-wrap:wrap}
+  .stat{background:#fff;border:1px solid #e8eaef;border-radius:12px;padding:.6rem .8rem}
+  .hidden{display:none}
+  .hr{height:1px;background:#eceff4;margin:.75rem 0}
+  .warning{color:var(--brand-red);font-weight:700}
+  .tagline{color:var(--brand-gray);font-size:.9rem}
+  .hint{font-size:.85rem;color:#6b7280}
+  @media (max-width:640px){
+    input.answer{min-width:22ch}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1><span class="brand">English · 4th Year</span> — Subject Questions / Object Questions + Question Tags</h1>
+    <div class="tagline">Complete the questions as indicated. Equivalent answers are accepted. Case, accents and punctuation are ignored.</div>
+  </div>
+  <div class="row">
+    <label>Student Name</label>
+    <input type="text" id="studentName" placeholder="Full name" />
+    <span class="pill timer" id="timer">00:00</span>
+  </div>
+</header>
+
+<div class="wrap grid">
+  <section class="card">
+    <div class="row" style="justify-content:space-between">
+      <div class="row">
+        <label>Apps Script URL</label>
+        <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" style="min-width:36ch" />
+      </div>
+      <div class="controls">
+        <button class="primary" id="checkBtn">Check Answers</button>
+        <button class="ghost" id="resetBtn">Reset</button>
+        <button class="muted" id="sendBtn">Send Results to Teacher</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="part1">
+    <h2>Part 1 · Subject & Object Questions (20)</h2>
+    <p class="hint">For each sentence, write: <strong>1) a Subject Question (SQ)</strong> starting as indicated and <strong>2) an Object Question (OQ)</strong> starting as indicated. Include the preposition when needed.</p>
+    <div id="sqoqContainer"></div>
+  </section>
+
+  <section class="card" id="part2">
+    <h2>Part 2 · Question Tags (10)</h2>
+    <p class="hint">Complete the question tag. Contractions and full forms are accepted.</p>
+    <div id="tagsContainer"></div>
+  </section>
+
+  <section class="card">
+    <h2>Statistics</h2>
+    <div class="stats">
+      <div class="stat">✔ Correct: <strong id="statCorrect">0</strong></div>
+      <div class="stat">✗ Incorrect: <strong id="statIncorrect">0</strong></div>
+      <div class="stat">Success rate: <strong id="statRate">0%</strong></div>
+      <div class="stat">Time: <strong id="statTime">00:00</strong></div>
+    </div>
+    <div class="hr"></div>
+    <details class="solutions" id="solutions" open="false">
+      <summary>Answer Key (appears after checking)</summary>
+      <pre id="solutionsText"></pre>
+    </details>
+  </section>
+</div>
+
+<!-- Example of Google Apps Script
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  MailApp.sendEmail(
+    "TEACHER@SCHOOL.COM",
+    "Results from " + data.studentName,
+    "Correct: " + data.correct + "\n" +
+    "Incorrect: " + data.incorrect + "\n" +
+    "Time: " + data.timeTaken + "\n" +
+    "Answers:\n" + data.answers.join("\n")
+  );
+  return ContentService.createTextOutput("OK");
+}
+-->
+</body>
+</html>
