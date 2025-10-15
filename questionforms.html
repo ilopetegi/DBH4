@@ -6,122 +6,407 @@
 <title>English 4th Year – Subject/Object Questions + Question Tags</title>
 <style>
   :root{
-    --brand-red:#E02828;
-    --brand-gray:#555A60;
+    --brand-red:#E02828; /* Salestarrak red */
+    --brand-gray:#555A60; /* Salestarrak gray */
     --ok:#18a957;
     --bad:#d21f3c;
-    --light:#f6f7f9;
+    --ink:#0f172a;
+    --muted:#eef2f7;
   }
-  html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#fff;color:#111}
-  header{padding:1rem 1.2rem;border-bottom:2px solid var(--light);display:flex;flex-wrap:wrap;gap:.75rem;align-items:end;justify-content:space-between}
-  h1{font-size:1.2rem;margin:.25rem 0;color:var(--brand-gray)}
-  .brand{font-weight:700;color:var(--brand-red)}
-  .grid{display:grid;gap:1rem}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fafbfc 0,#fff 140px)}
+  header{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(6px);border-bottom:1px solid #e8ecf1}
   .wrap{max-width:1100px;margin:0 auto;padding:1rem}
-  .card{background:#fff;border:1px solid #e8eaef;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);padding:1rem}
-  .row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
-  label{font-size:.9rem;color:var(--brand-gray)}
-  input[type="text"], input[type="url"]{padding:.55rem .65rem;border-radius:10px;border:1px solid #d8dbe2;min-width:18ch;max-width:100%;font-size:1rem}
-  input.answer{min-width:28ch}
-  input.tag{min-width:16ch}
-  .controls{display:flex;gap:.5rem;flex-wrap:wrap}
-  button{border:0;border-radius:12px;padding:.7rem 1rem;font-weight:700;cursor:pointer}
+  .title{display:flex;gap:1rem;align-items:center;justify-content:space-between}
+  h1{font-size:1.25rem;margin:.25rem 0;color:var(--brand-gray)}
+  .brand{color:var(--brand-red);font-weight:800}
+  .row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+  label{font-size:.9rem;color:#6b7280}
+  input[type=text],input[type=url]{padding:.6rem .75rem;border:1px solid #d8dbe2;border-radius:12px;font-size:1rem;min-width:22ch}
+  .timer{font-variant-numeric:tabular-nums;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:.35rem .7rem}
+  .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+  button{border:0;border-radius:12px;padding:.7rem 1rem;font-weight:700;cursor:pointer;display:inline-flex;gap:.5rem;align-items:center}
   .primary{background:var(--brand-red);color:#fff}
-  .ghost{background:#f1f2f6;color:#222}
-  .muted{background:#eceff4;color:#222}
-  .pill{font-size:.85rem;color:#222;background:#f2f4f7;padding:.35rem .6rem;border-radius:999px;border:1px solid #e4e7ec}
-  .timer{font-variant-numeric:tabular-nums}
-  .exercise{border-top:1px dashed #e6e8ee;padding-top:.75rem;margin-top:.5rem}
-  .qnum{display:inline-block;width:3ch;color:#666}
-  .prompt{font-weight:600}
-  .note{color:#555}
-  .tick{font-weight:900;margin-left:.35rem}
+  .ghost{background:#eef2f7}
+  .muted{background:#f7f7f9}
+  .card{background:#fff;border:1px solid #e9edf2;border-radius:16px;box-shadow:0 6px 18px rgba(16,24,40,.05);padding:1rem;margin:1rem 0}
+  .section-title{display:flex;align-items:end;justify-content:space-between;gap:1rem}
+  .hint{font-size:.9rem;color:#6b7280}
+  .grid{display:grid;gap:.9rem}
+  @media(min-width:900px){.grid.two{grid-template-columns:1fr 1fr}}
+  .exercise{border:1px dashed #e5e7eb;border-radius:14px;padding:.8rem;background:linear-gradient(180deg,#fff, #fcfdff)}
+  .qhead{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+  .badge{background:var(--muted);border:1px solid #e6eaf0;color:#374151;font-weight:700;border-radius:999px;padding:.2rem .55rem;font-size:.8rem}
+  .qnum{width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;background:#fff;border:2px solid #e7eaf0;font-weight:800;color:#111}
+  .prompt{font-weight:700}
+  .pill{font-size:.82rem;color:#111;background:#f8fafc;border:1px solid #e5e7eb;border-radius:999px;padding:.25rem .6rem}
+  .rowline{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.35rem 0}
+  .answer{flex:1;min-width:260px}
+  .tick{font-weight:900}
   .ok{color:var(--ok)}
   .bad{color:var(--bad)}
-  details.solutions{margin-top:1rem}
-  summary{cursor:pointer}
-  .solutions pre{background:#0f172a;border-radius:10px;color:#f1f5f9;padding:.75rem;overflow:auto}
-  .stats{display:flex;gap:1rem;flex-wrap:wrap}
-  .stat{background:#fff;border:1px solid #e8eaef;border-radius:12px;padding:.6rem .8rem}
-  .hidden{display:none}
-  .hr{height:1px;background:#eceff4;margin:.75rem 0}
-  .warning{color:var(--brand-red);font-weight:700}
-  .tagline{color:var(--brand-gray);font-size:.9rem}
-  .hint{font-size:.85rem;color:#6b7280}
-  @media (max-width:640px){
-    input.answer{min-width:22ch}
-  }
+  .is-correct{outline:2px solid var(--ok);outline-offset:1px}
+  .is-wrong{outline:2px solid var(--bad);outline-offset:1px}
+  .stats{display:flex;gap:.7rem;flex-wrap:wrap}
+  .stat{background:#fff;border:1px solid #e9edf2;border-radius:12px;padding:.5rem .75rem}
+  .bar{height:10px;background:#eef2f7;border-radius:999px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-red),#ff6b6b)}
+  details.solutions summary{cursor:pointer}
+  .solutions pre{background:#0f172a;color:#e5e7eb;border-radius:12px;padding:.8rem;overflow:auto}
 </style>
 </head>
 <body>
-<header>
-  <div>
-    <h1><span class="brand">English · 4th Year</span> — Subject Questions / Object Questions + Question Tags</h1>
-    <div class="tagline">Complete the questions as indicated. Equivalent answers are accepted. Case, accents and punctuation are ignored.</div>
-  </div>
-  <div class="row">
-    <label>Student Name</label>
-    <input type="text" id="studentName" placeholder="Full name" />
-    <span class="pill timer" id="timer">00:00</span>
-  </div>
-</header>
-
-<div class="wrap grid">
-  <section class="card">
-    <div class="row" style="justify-content:space-between">
-      <div class="row">
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div>
+          <h1><span class="brand">English · 4th Year</span> — Subject/Object Questions + Question Tags</h1>
+          <div class="hint">Write the questions as indicated. We accept equivalent answers. Case/accents/punctuation are ignored.</div>
+        </div>
+        <div class="row">
+          <label>Student Name</label>
+          <input type="text" id="studentName" placeholder="Full name" />
+          <span class="timer" id="timer">00:00</span>
+        </div>
+      </div>
+      <div class="toolbar">
         <label>Apps Script URL</label>
-        <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" style="min-width:36ch" />
-      </div>
-      <div class="controls">
-        <button class="primary" id="checkBtn">Check Answers</button>
-        <button class="ghost" id="resetBtn">Reset</button>
-        <button class="muted" id="sendBtn">Send Results to Teacher</button>
+        <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" style="min-width:38ch" />
+        <button class="primary" id="checkBtn">✓ Check Answers</button>
+        <button class="ghost" id="resetBtn">↺ Reset</button>
+        <button class="muted" id="sendBtn">✉ Send Results to Teacher</button>
       </div>
     </div>
-  </section>
+  </header>
 
-  <section class="card" id="part1">
-    <h2>Part 1 · Subject & Object Questions (20)</h2>
-    <p class="hint">For each sentence, write: <strong>1) a Subject Question (SQ)</strong> starting as indicated and <strong>2) an Object Question (OQ)</strong> starting as indicated. Include the preposition when needed.</p>
-    <div id="sqoqContainer"></div>
-  </section>
+  <main class="wrap">
+    <section class="card">
+      <div class="section-title"><h2>Part 1 · Subject & Object Questions (20)</h2><span class="badge">SQ + OQ</span></div>
+      <p class="hint">For each sentence, write: <strong>1) a Subject Question (SQ)</strong> starting as indicated and <strong>2) an Object Question (OQ)</strong> starting as indicated. Include the preposition when needed.</p>
+      <div id="sqoqContainer" class="grid two"></div>
+    </section>
 
-  <section class="card" id="part2">
-    <h2>Part 2 · Question Tags (10)</h2>
-    <p class="hint">Complete the question tag. Contractions and full forms are accepted.</p>
-    <div id="tagsContainer"></div>
-  </section>
+    <section class="card">
+      <div class="section-title"><h2>Part 2 · Question Tags (10)</h2><span class="badge">Tags</span></div>
+      <p class="hint">Complete the question tag. Contractions and full forms are accepted.</p>
+      <div id="tagsContainer" class="grid two"></div>
+    </section>
 
-  <section class="card">
-    <h2>Statistics</h2>
-    <div class="stats">
-      <div class="stat">✔ Correct: <strong id="statCorrect">0</strong></div>
-      <div class="stat">✗ Incorrect: <strong id="statIncorrect">0</strong></div>
-      <div class="stat">Success rate: <strong id="statRate">0%</strong></div>
-      <div class="stat">Time: <strong id="statTime">00:00</strong></div>
-    </div>
-    <div class="hr"></div>
-    <details class="solutions" id="solutions" open="false">
-      <summary>Answer Key (appears after checking)</summary>
-      <pre id="solutionsText"></pre>
-    </details>
-  </section>
-</div>
+    <section class="card">
+      <h2>Statistics</h2>
+      <div class="stats">
+        <div class="stat">✔ Correct: <strong id="statCorrect">0</strong></div>
+        <div class="stat">✗ Incorrect: <strong id="statIncorrect">0</strong></div>
+        <div class="stat">Success rate: <strong id="statRate">0%</strong></div>
+        <div class="stat">Time: <strong id="statTime">00:00</strong></div>
+      </div>
+      <div class="bar" aria-label="Progress"><i id="progressBar"></i></div>
+      <details class="solutions" id="solutions" open="false">
+        <summary>Answer Key (appears after checking)</summary>
+        <pre id="solutionsText"></pre>
+      </details>
+    </section>
+  </main>
 
-<!-- Example of Google Apps Script
-function doPost(e) {
-  const data = JSON.parse(e.postData.contents);
-  MailApp.sendEmail(
-    "TEACHER@SCHOOL.COM",
-    "Results from " + data.studentName,
-    "Correct: " + data.correct + "\n" +
-    "Incorrect: " + data.incorrect + "\n" +
-    "Time: " + data.timeTaken + "\n" +
-    "Answers:\n" + data.answers.join("\n")
-  );
-  return ContentService.createTextOutput("OK");
+  <!-- Google Apps Script example (paste in your project and deploy as web app)
+  function doPost(e) {
+    const data = JSON.parse(e.postData.contents);
+    MailApp.sendEmail(
+      "TEACHER@SCHOOL.COM",
+      "Results from " + data.studentName,
+      "Correct: " + data.correct + "\n" +
+      "Incorrect: " + data.incorrect + "\n" +
+      "Time: " + data.timeTaken + "\n" +
+      "Answers:\n" + data.answers.join("\n")
+    );
+    return ContentService.createTextOutput("OK");
+  }
+  -->
+
+<script>
+/************ Helpers ************/
+const norm = (s)=> (s||"")
+  .toString().trim().toLowerCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/[“”]/g,'"')
+  .replace(/[^a-z0-9\s]/g,'')
+  .replace(/\s+/g,' ').trim();
+const fmtTime = (secs)=>`${String(Math.floor(secs/60)).padStart(2,'0')}:${String(secs%60).padStart(2,'0')}`;
+
+/************ Data ************/
+const SQOQ = [
+  {sent:'Marta bought a new laptop.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who bought a new laptop','who bought a laptop'],
+    oqAccept:['what did marta buy','what did marta buy a new laptop','what did marta buy?']},
+  {sent:'Leo called his sister in the evening.', sqStart:'Who', oqStart:'Who',
+    sqAccept:['who called his sister in the evening','who called his sister'],
+    oqAccept:['who did leo call in the evening','who did leo call']},
+  {sent:'Sofía invited Diego to the party.', sqStart:'Who', oqStart:'Who',
+    sqAccept:['who invited diego to the party','who invited diego'],
+    oqAccept:['who did sofia invite to the party','who did sofia invite']},
+  {sent:'The blue bus hit a lamppost.', sqStart:'What', oqStart:'What',
+    sqAccept:['what hit a lamppost','what hit the lamppost'],
+    oqAccept:['what did the blue bus hit']},
+  {sent:'Gemma was talking to John.', sqStart:'Who', oqStart:'Who',
+    sqAccept:['who was talking to john'],
+    oqAccept:['who was gemma talking to','to whom was gemma talking']},
+  {sent:'My uncle gave the keys to Laura.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who gave the keys to laura'],
+    oqAccept:['what did my uncle give to laura','what did my uncle give']},
+  {sent:'Daniel found the remote under the sofa.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who found the remote under the sofa','who found the remote'],
+    oqAccept:['what did daniel find under the sofa','what did daniel find']},
+  {sent:'The manager sent an email to the team.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who sent an email to the team','who sent email to the team'],
+    oqAccept:['what did the manager send to the team','what did the manager send']},
+  {sent:'A sudden storm delayed the flight.', sqStart:'What', oqStart:'What',
+    sqAccept:['what delayed the flight'],
+    oqAccept:['what did the storm delay','what did a sudden storm delay']},
+  {sent:'Nora was waiting for the bus.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who was waiting for the bus'],
+    oqAccept:['what was nora waiting for','for what was nora waiting']},
+  {sent:'Lucas borrowed a book from the library.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who borrowed a book from the library','who borrowed a book'],
+    oqAccept:['what did lucas borrow from the library','what did lucas borrow']},
+  {sent:'The twins ate all the cookies.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who ate all the cookies','who ate the cookies'],
+    oqAccept:['what did the twins eat','what did the twins eat all']},
+  {sent:'Melissa looked for her glasses in the kitchen.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who looked for her glasses in the kitchen','who looked for her glasses'],
+    oqAccept:['what was melissa looking for in the kitchen','what was melissa looking for']},
+  {sent:'The tall comedian told a joke about holidays.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who told a joke about holidays','who told a joke'],
+    oqAccept:['what did the comedian tell','what did the tall comedian tell']},
+  {sent:'Our neighbors painted the fence yesterday.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who painted the fence yesterday','who painted the fence'],
+    oqAccept:['what did our neighbors paint yesterday','what did our neighbours paint yesterday','what did our neighbors paint']},
+  {sent:'The printer made a strange noise.', sqStart:'What', oqStart:'What',
+    sqAccept:['what made a strange noise','what made strange noise'],
+    oqAccept:['what did the printer make']},
+  {sent:'Carla was listening to a podcast on the train.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who was listening to a podcast on the train','who was listening to a podcast'],
+    oqAccept:['what was carla listening to on the train','what was carla listening to']},
+  {sent:'The science teacher explained photosynthesis to us.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who explained photosynthesis to us','who explained photosynthesis'],
+    oqAccept:['what did the science teacher explain to us','what did the science teacher explain']},
+  {sent:'An old photograph inspired the painter.', sqStart:'What', oqStart:'Who',
+    sqAccept:['what inspired the painter'],
+    oqAccept:['who did the photograph inspire','who did an old photograph inspire']},
+  {sent:'Victor sent a message to his friend yesterday.', sqStart:'Who', oqStart:'What',
+    sqAccept:['who sent a message to his friend yesterday','who sent a message to his friend'],
+    oqAccept:['what did victor send to his friend yesterday','what did victor send']},
+];
+
+const TAGS = [
+  {sent:'She is coming', accept:['isnt she','is not she']},
+  {sent:'They live here', accept:['dont they','do not they']},
+  {sent:"He doesn't like coffee", accept:['does he']},
+  {sent:'You finished the homework', accept:['didnt you','did not you']},
+  {sent:'We are leaving now', accept:['arent we','are not we']},
+  {sent:'She has visited London', accept:['hasnt she','has not she']},
+  {sent:'Tom was talking to you', accept:['wasnt he','was not he']},
+  {sent:'You will help me', accept:['wont you','will not you']},
+  {sent:'She can drive', accept:['cant she','can not she']},
+  {sent:"I'm late", accept:['arent i','am i not']},
+];
+
+/************ Render ************/
+const $$ = (s,el=document)=>el.querySelector(s);
+const sqoqContainer = $$('#sqoqContainer');
+const tagsContainer = $$('#tagsContainer');
+
+function renderSQOQ(){
+  sqoqContainer.innerHTML='';
+  SQOQ.forEach((q,idx)=>{
+    const n = idx+1;
+    const ex = document.createElement('div');
+    ex.className = 'exercise';
+    ex.innerHTML = `
+      <div class="qhead"><div class="qnum">${n}</div><div class="prompt">${q.sent}</div></div>
+      <div class="rowline">
+        <span class="pill">SQ • start: <b>${q.sqStart}</b>…</span>
+        <input class="answer" type="text" id="sq_${idx}" placeholder="Write the Subject Question" />
+        <span class="tick" id="t_sq_${idx}"></span>
+      </div>
+      <div class="rowline">
+        <span class="pill">OQ • start: <b>${q.oqStart}</b>…</span>
+        <input class="answer" type="text" id="oq_${idx}" placeholder="Write the Object Question" />
+        <span class="tick" id="t_oq_${idx}"></span>
+      </div>`;
+    sqoqContainer.appendChild(ex);
+  });
 }
--->
+
+function renderTags(){
+  tagsContainer.innerHTML='';
+  TAGS.forEach((t,idx)=>{
+    const n = idx+1;
+    const ex = document.createElement('div');
+    ex.className = 'exercise';
+    ex.innerHTML = `
+      <div class="qhead"><div class="qnum">${n}</div><div class="prompt">${t.sent}, <em>___?</em></div></div>
+      <div class="rowline">
+        <span class="pill">Tag</span>
+        <input class="answer" type="text" id="tag_${idx}" placeholder="e.g., isn't she?" />
+        <span class="tick" id="t_tag_${idx}"></span>
+      </div>`;
+    tagsContainer.appendChild(ex);
+  });
+}
+
+renderSQOQ();
+renderTags();
+
+/************ Checking ************/
+function checkSQ(idx,val){
+  const v = norm(val);
+  if(!v.startsWith(norm(SQOQ[idx].sqStart))) return false;
+  return SQOQ[idx].sqAccept.some(a=> v===norm(a) || v===norm(a.replace(/\bthe\b/g,'')) );
+}
+function checkOQ(idx,val){
+  const v = norm(val);
+  if(!v.startsWith(norm(SQOQ[idx].oqStart))) return false;
+  return SQOQ[idx].oqAccept.some(a=> v===norm(a) || v===norm(a.replace(/\bthe\b/g,'')) );
+}
+function checkTag(idx,val){
+  const v = norm(val);
+  return TAGS[idx].accept.some(a=> v===norm(a));
+}
+
+/************ Timer ************/
+let elapsed=0;const timerEl=$$('#timer');const timeLabel=$$('#statTime');
+function tick(){ elapsed++; timerEl.textContent=fmtTime(elapsed); if(timeLabel) timeLabel.textContent=fmtTime(elapsed); }
+setInterval(tick,1000);
+
+/************ Controls ************/
+const statCorrect=$$('#statCorrect');
+const statIncorrect=$$('#statIncorrect');
+const statRate=$$('#statRate');
+const progressBar=$$('#progressBar');
+const solutions=$$('#solutions');
+const solutionsText=$$('#solutionsText');
+
+function setFieldState(el,ok){
+  el.classList.remove('is-correct','is-wrong');
+  el.classList.add(ok? 'is-correct':'is-wrong');
+}
+
+function updateProgress(corr,inc){
+  const total = corr+inc || 1;
+  const pct = Math.round((corr/total)*100);
+  if(progressBar) progressBar.style.width = pct+'%';
+  statRate.textContent = pct+'%';
+}
+
+$$('#checkBtn').addEventListener('click',()=>{
+  const name = $$('#studentName').value.trim();
+  if(!name){ alert('Please type your name before checking.'); return; }
+  let correct=0, incorrect=0; const answersOut=[];
+
+  // SQ/OQ
+  SQOQ.forEach((q,idx)=>{
+    const sq = $(`#sq_${idx}`), oq = $(`#oq_${idx}`);
+  });
+});
+
+function $(id){return document.getElementById(id)}
+
+$$('#checkBtn').addEventListener('click',()=>{
+  const name = $$('#studentName').value.trim();
+  if(!name){ alert('Please type your name before checking.'); return; }
+  let correct=0, incorrect=0; const answersOut=[];
+
+  SQOQ.forEach((q,idx)=>{
+    const sqVal = $(`sq_${idx}`).value || '';
+    const oqVal = $(`oq_${idx}`).value || '';
+    const sqOK = checkSQ(idx,sqVal);
+    const oqOK = checkOQ(idx,oqVal);
+    $(`t_sq_${idx}`).textContent = sqOK? '✓':'✗';
+    $(`t_sq_${idx}`).className = 'tick ' + (sqOK?'ok':'bad');
+    $(`t_oq_${idx}`).textContent = oqOK? '✓':'✗';
+    $(`t_oq_${idx}`).className = 'tick ' + (oqOK?'ok':'bad');
+    setFieldState($(`sq_${idx}`), sqOK);
+    setFieldState($(`oq_${idx}`), oqOK);
+    correct += (sqOK?1:0) + (oqOK?1:0);
+    incorrect += (sqOK?0:1) + (oqOK?0:1);
+    answersOut.push(`${idx+1}. SQ: ${$(`sq_${idx}`).value}`);
+    answersOut.push(`${idx+1}. OQ: ${$(`oq_${idx}`).value}`);
+  });
+
+  TAGS.forEach((t,idx)=>{
+    const v = $(`tag_${idx}`).value || '';
+    const ok = checkTag(idx,v);
+    $(`t_tag_${idx}`).textContent = ok? '✓':'✗';
+    $(`t_tag_${idx}`).className = 'tick ' + (ok?'ok':'bad');
+    setFieldState($(`tag_${idx}`), ok);
+    correct += ok?1:0; incorrect += ok?0:1;
+    answersOut.push(`T${idx+1}. TAG: ${v}`);
+  });
+
+  statCorrect.textContent = correct;
+  statIncorrect.textContent = incorrect;
+  updateProgress(correct,incorrect);
+
+  const solLines=[];
+  SQOQ.forEach((q,idx)=>{
+    solLines.push(`${idx+1}. ${q.sent}`);
+    solLines.push(`   SQ ▶ ${q.sqAccept[0]}`);
+    solLines.push(`   OQ ▶ ${q.oqAccept[0]}`);
+  });
+  TAGS.forEach((t,idx)=> solLines.push(`TAG ${idx+1} ▶ ${t.accept[0]}?`) );
+  solutionsText.textContent = solLines.join('\n');
+  solutions.open = true;
+});
+
+$$('#resetBtn').addEventListener('click',()=>{
+  if(!confirm('Reset all answers?')) return;
+  document.querySelectorAll('input.answer').forEach(i=>{i.value=''; i.classList.remove('is-correct','is-wrong');});
+  document.querySelectorAll('.tick').forEach(t=>{t.textContent=''; t.className='tick';});
+  if(statCorrect) statCorrect.textContent='0';
+  if(statIncorrect) statIncorrect.textContent='0';
+  updateProgress(0,1);
+});
+
+$$('#sendBtn').addEventListener('click', async ()=>{
+  const name = $$('#studentName').value.trim();
+  if(!name){ alert('Type your name before sending.'); return; }
+  const url = $$('#scriptUrl').value.trim();
+  if(!url){ alert('Add your Google Apps Script URL to send results.'); return; }
+
+  let correct=0, incorrect=0; const answers=[];
+  SQOQ.forEach((q,idx)=>{
+    const sqVal = $(`sq_${idx}`).value || '';
+    const oqVal = $(`oq_${idx}`).value || '';
+    const sqOK = checkSQ(idx,sqVal);
+    const oqOK = checkOQ(idx,oqVal);
+    correct += (sqOK?1:0) + (oqOK?1:0);
+    incorrect += (sqOK?0:1) + (oqOK?0:1);
+    answers.push(`${idx+1}. SQ: ${sqVal}`);
+    answers.push(`${idx+1}. OQ: ${oqVal}`);
+  });
+  TAGS.forEach((t,idx)=>{
+    const v = $(`tag_${idx}`).value || '';
+    const ok = checkTag(idx,v);
+    correct += ok?1:0; incorrect += ok?0:1;
+    answers.push(`T${idx+1}. TAG: ${v}`);
+  });
+
+  const payload = {
+    studentName: name,
+    correct,
+    incorrect,
+    timeTaken: `${elapsed} seconds`,
+    answers
+  };
+
+  try{
+    const res = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    alert('Results sent. Thank you!');
+  }catch(err){
+    alert('Could not send (check the WebApp URL & deployment). Error: '+err.message);
+  }
+});
+</script>
 </body>
 </html>
