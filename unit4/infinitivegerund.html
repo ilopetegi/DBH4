@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Master: Gerund vs Infinitive</title>
+    <style>
+        :root { --primary: #4A90E2; --success: #2ECC71; --error: #E74C3C; --bg: #F5F7FA; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .app-container { max-width: 600px; width: 100%; }
+        header { text-align: center; margin-bottom: 20px; }
+        .progress-bar { width: 100%; height: 10px; background: #DDD; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+        #progress { width: 0%; height: 100%; background: var(--primary); transition: 0.3s; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { margin-top: 0; color: var(--primary); font-size: 1.2rem; }
+        input { width: 100%; padding: 12px; border: 2px solid #DDD; border-radius: 8px; font-size: 1.1rem; box-sizing: border-box; margin: 15px 0; }
+        .btns { display: flex; gap: 10px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-check { background: var(--primary); color: white; }
+        .btn-next { background: #34495E; color: white; display: none; }
+        .feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
+        .correct { color: var(--success); }
+        .incorrect { color: var(--error); }
+        .explanation-box { margin-top: 15px; padding: 15px; background: #f0f4f8; border-left: 5px solid var(--primary); border-radius: 4px; display: none; font-size: 0.95rem; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>Grammar App</h1>
+        <div class="progress-bar"><div id="progress"></div></div>
+        <p>Puntuación: <span id="score">0</span> / <span id="total-count">0</span></p>
+    </header>
+
+    <div id="quiz-area">
+        </div>
+</div>
+
+<script>
+    const exercises = [
+        { v: "regret", q: "I regret _______ (not tell) her the truth.", a: "not telling", hint: "Gerundio: Arrepentimiento por algo que ya sucedió en el pasado." },
+        { v: "regret", q: "We regret _______ (inform) you that the flight is delayed.", a: "to inform", hint: "Infinitivo: Se usa para dar malas noticias de forma oficial." },
+        { v: "remember", q: "Did you remember _______ (lock) the door?", a: "to lock", hint: "Infinitivo: Recordar que tienes que hacer una tarea pendiente." },
+        { v: "remember", q: "I remember _______ (lock) it, I have the key here.", a: "locking", hint: "Gerundio: Tener el recuerdo de haber hecho la acción." },
+        { v: "stop", q: "He stopped _______ (smoke) because of his health.", a: "smoking", hint: "Gerundio: Abandonar un hábito o actividad permanentemente." },
+        { v: "stop", q: "She stopped _______ (get) some petrol.", a: "to get", hint: "Infinitivo: Hacer una pausa en una acción para empezar otra (parar para...)." },
+        { v: "try", q: "I tried _______ (move) the table, but it was too heavy.", a: "to move", hint: "Infinitivo: Hacer un esfuerzo para intentar algo difícil." },
+        { v: "try", q: "Try _______ (add) some salt to the soup.", a: "adding", hint: "Gerundio: Experimentar con una solución para ver si funciona." },
+        { v: "forget", q: "Don't forget _______ (buy) the milk.", a: "to buy", hint: "Infinitivo: No olvidar realizar una tarea futura." },
+        { v: "forget", q: "I'll never forget _______ (see) the Grand Canyon.", a: "seeing", hint: "Gerundio: No olvidar una experiencia o recuerdo pasado." },
+        { v: "go on", q: "The lecturer went on _______ (talk) about biology.", a: "talking", hint: "Gerundio: Continuar haciendo la misma actividad." },
+        { v: "go on", q: "He finished the intro and went on _______ (explain) the rules.", a: "to explain", hint: "Infinitivo: Terminar una cosa y pasar a la siguiente etapa." }
+        // ... (puedes añadir los 30 siguiendo este formato)
+    ];
+
+    let current = 0;
+    let score = 0;
+    document.getElementById('total-count').innerText = exercises.length;
+
+    function renderExercise() {
+        if(current >= exercises.length) {
+            document.getElementById('quiz-area').innerHTML = `
+                <div class="card" style="text-align:center">
+                    <h2>¡Completado!</h2>
+                    <p style="font-size: 1.5rem">Resultado final: ${score} de ${exercises.length}</p>
+                    <button class="btn-check" onclick="location.reload()">Reiniciar Test</button>
+                </div>`;
+            return;
+        }
+
+        const ex = exercises[current];
+        document.getElementById('quiz-area').innerHTML = `
+            <div class="card">
+                <h2>Verbo: ${ex.v.toUpperCase()}</h2>
+                <p style="font-size: 1.1rem">${ex.q}</p>
+                <input type="text" id="user-input" autocomplete="off" placeholder="Escribe tu respuesta...">
+                <div id="feedback" class="feedback"></div>
+                <div id="explanation" class="explanation-box">
+                    <strong>Por qué:</strong> ${ex.hint}
+                </div>
+                <div class="btns">
+                    <button class="btn-check" id="btn-check" onclick="processAnswer()">Comprobar</button>
+                    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente</button>
+                </div>
+            </div>`;
+        
+        document.getElementById('user-input').addEventListener("keypress", function(e) {
+            if (e.key === "Enter") processAnswer();
+        });
+    }
+
+    window.processAnswer = function() {
+        const input = document.getElementById('user-input');
+        const userAns = input.value.trim().toLowerCase();
+        const feedback = document.getElementById('feedback');
+        const expl = document.getElementById('explanation');
+        const correctAns = exercises[current].a.toLowerCase();
+
+        if (userAns === correctAns) {
+            feedback.innerHTML = "¡Correcto! ✨";
+            feedback.className = "feedback correct";
+            score++;
+            document.getElementById('score').innerText = score;
+        } else {
+            feedback.innerHTML = `Incorrecto. La respuesta es: <strong>${exercises[current].a}</strong>`;
+            feedback.className = "feedback incorrect";
+        }
+
+        expl.style.display = "block";
+        document.getElementById('btn-check').style.display = "none";
+        document.getElementById('btn-next').style.display = "block";
+        input.disabled = true;
+    }
+
+    window.nextQuestion = function() {
+        current++;
+        updateProgress();
+        renderExercise();
+    }
+
+    function updateProgress() {
+        const perc = (current / exercises.length) * 100;
+        document.getElementById('progress').style.width = perc + "%";
+    }
+
+    renderExercise();
+</script>
+
+</body>
+</html>
