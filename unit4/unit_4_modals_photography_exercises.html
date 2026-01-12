@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unit 4: Modals of Deduction, Photography Vocabulary & Prepositional Phrases (50 ejercicios)</title>
+<style>
+:root{--bg:#f7f9fc;--card:#ffffff;--accent:#0b6cf0;--correct:#1d8f3a;--wrong:#d9392b}
+body{font-family:Inter,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);margin:0;padding:24px;color:#0b2540}
+.wrap{max-width:920px;margin:0 auto}
+.card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(11,28,50,0.06)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+button.secondary{background:#e6eefc;color:var(--accent)}
+.qwrap{margin-top:14px}
+input.answer{padding:10px;width:100%;border-radius:8px;border:1px solid #c9d6ee;margin-top:8px;font-size:15px}
+.feedback{margin-top:10px;padding:10px;border-radius:8px;display:none}
+.feedback.show{display:block}
+.explain{margin-top:8px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h2>Unit 4: Modals (open answer), Photography Vocabulary & Prepositional Phrases</h2>
+<div class="controls">
+<button id="startBtn">Reiniciar</button>
+<button id="checkBtn" class="secondary">Comprobar</button>
+<button id="showBtn" class="secondary">Mostrar respuesta</button>
+<button id="prevBtn" class="secondary">Anterior</button>
+<button id="nextBtn" class="secondary">Siguiente</button>
+</div>
+<div id="qCard"></div>
+<p><strong>Progreso:</strong> <span id="progressTxt">0/50</span> <strong>Aciertos:</strong> <span id="scoreTxt">0</span></p>
+</div>
+</div>
+
+<script>
+const questions = [
+{q:"I'm not sure but that girl looks like my sister. She ___ be my sister.",ans:"might",explan:"Usamos <strong>might</strong> para deducciones con poca seguridad."},
+{q:"There are wet footprints. They ___ have come in from the rain.",ans:"must have",explan:"Se usa <strong>must have</strong> para deducciones muy probables en pasado."},
+{q:"It's midnight but the subject is well lit. They ___ have used a flash.",ans:"must have",explan:"Iluminación fuerte en la noche → deducción clara <strong>must have</strong>."},
+{q:"No noise from the camera. It ___ be switched off.",ans:"must",explan:"Alta probabilidad en presente: <strong>must</strong>."},
+{q:"Photo extremely blurry. They ___ have used a tripod.",ans:"must not have",explan:"Si está borrosa, deducimos que <strong>must not have</strong> used a tripod."},
+{q:"Lens cap on. The picture ___ be completely black.",ans:"can't",explan:"Si es imposible: <strong>can't</strong>."},
+{q:"Aperture wide open but photographer says he didn't touch it. He ___ have adjusted it.",ans:"might have",explan:"Posibilidad incierta: <strong>might have</strong>."},
+{q:"Thousands of RAW files. He ___ be a professional.",ans:"must",explan:"Fuerte deducción presente: <strong>must</strong>."},
+{q:"Sand in camera bag. The camera ___ have been on the beach.",ans:"must have",explan:"Muy probable en pasado: <strong>must have</strong>."},
+{q:"Photo taken at 3 a.m. They ___ have used a tripod.",ans:"must have",explan:"Fotografía nocturna → deducción fuerte."},
+{q:"Close-up subject but no telephoto used? He ___ be lying.",ans:"might",explan:"Posibilidad débil: <strong>might</strong>."},
+{q:"Diffuser missing and flash harsh. They ___ have forgotten it.",ans:"might have",explan:"Posibilidad razonable: <strong>might have</strong>."},
+{q:"Camera wet and dead. It ___ have fallen into water.",ans:"might have",explan:"Posible causa: <strong>might have</strong>."},
+{q:"SD still full. He ___ have uploaded them yet.",ans:"can't have",explan:"Imposible que las haya subido: <strong>can't have</strong>."},
+{q:"Creamy bokeh. He ___ have used a wide aperture.",ans:"must have",explan:"Deducción fotográfica: <strong>must have</strong>."},
+{q:"Shortest focal length but tiny subject. They ___ be using a telephoto lens.",ans:"must not",explan:"Deducción negativa presente: <strong>must not</strong>."},
+{q:"Battery missing = dead camera. The battery ___ have drained.",ans:"must have",explan:"Deducción fuerte: <strong>must have</strong>."},
+{q:"Macro lens + insect fills frame. He ___ have been very close.",ans:"must have",explan:"Macro exige proximidad."},
+{q:"Running on beach with tripod. He ___ be trying to shoot sunrise.",ans:"might be",explan:"Posible intención: <strong>might be</strong>."},
+{q:"Sharp background, not subject. Camera ___ have been on manual focus.",ans:"must have",explan:"Deducción clara: <strong>must have</strong>."},
+{q:"A lens that captures a wider view is a ___ lens.",ans:"wide-angle",explan:"Vocabulario Unit 4."},
+{q:"A device used to stabilise the camera is a ___.",ans:"tripod",explan:"Trípode = estabilidad."},
+{q:"A filter that reduces incoming light is an ___ filter.",ans:"ND",explan:"Neutral Density = ND."},
+{q:"Sensor sensitivity to light is called ___.",ans:"ISO",explan:"ISO = sensibilidad."},
+{q:"The blurred aesthetic background is called ___.",ans:"bokeh",explan:"Efecto estético desenfocado."},
+{q:"A lens for close-up shooting is a ___ lens.",ans:"macro",explan:"Macro = primeros planos extremos."},
+{q:"Time the shutter stays open is shutter ___.",ans:"speed",explan:"Shutter speed."},
+{q:"A device to fire the camera remotely is a shutter ___.",ans:"remote",explan:"Remote shutter release."},
+{q:"The part controlling light entry is the ___.",ans:"aperture",explan:"Controla luz y profundidad de campo."},
+{q:"The cap protecting the lens is the lens ___.",ans:"cap",explan:"Lens cap."},
+{q:"A photo that is sharp is ___ focus.",ans:"in",explan:"Unit 4 phrase: in focus."},
+{q:"A photo that is blurry is ___ of focus.",ans:"out",explan:"Unit 4 phrase: out of focus."},
+{q:"If you are going somewhere quickly, you are ___ a hurry.",ans:"in",explan:"Unit 4 phrase: in a hurry."},
+{q:"___ contrast, this photo uses warm colours.",ans:"in",explan:"Unit 4 phrase: in contrast."},
+{q:"___ fact, this is my favourite photograph.",ans:"in",explan:"Unit 4 phrase: in fact."},
+{q:"___ general, landscapes need good light.",ans:"in",explan:"Unit 4 phrase: in general."},
+{q:"The composition is really unusual — it's ___ of the ordinary.",ans:"out",explan:"Unit 4 phrase: out of the ordinary."},
+{q:"The subject is perfectly ___ focus.",ans:"in",explan:"Repetition for practice: in focus."},
+{q:"The background is totally ___ of focus.",ans:"out",explan:"Repetition for practice: out of focus."},
+{q:"___ contrast, the second image looks darker.",ans:"in",explan:"Repetition: in contrast."},
+{q:"The sky is very dark. It ___ rain soon.",ans:"might",explan:"Posibilidad futura: might."},
+{q:"All the photos are missing. Someone ___ have deleted them.",ans:"must have",explan:"Deducción fuerte en pasado."},
+{q:"He knows nothing about cameras. He ___ be a beginner.",ans:"must",explan:"Alta probabilidad presente."},
+{q:"The image quality is too good for a phone. It ___ have been taken with a DSLR.",ans:"must have",explan:"Deducción clara basada en calidad."},
+{q:"The shutter didn't sound. The camera ___ be in silent mode.",ans:"might",explan:"Posible explicación."},
+{q:"A lens with variable focal lengths is a ___ lens.",ans:"zoom",explan:"Zoom lens."},
+{q:"The soft light used for portraits often comes from a ___.",ans:"diffuser",explan:"Diffuser suaviza la luz."},
+{q:"The measurement of brightness in a photo is called ___.",ans:"exposure",explan:"Exposure."},
+{q:"A long lens that magnifies far subjects is called a ___ lens.",ans:"telephoto",explan:"Telephoto lens."},
+{q:"To make the background blurry, photographers use a wide ___.",ans:"aperture",explan:"Wide aperture produce bokeh."},
+{q:"This edit looks strange — it's really ___ of the ordinary.",ans:"out",explan:"Expresión fija Unit 4."},
+{q:"The photo is completely sharp — it's ___ focus.",ans:"in",explan:"In focus."},
+{q:"The photographer arrived ___ a hurry.",ans:"in",explan:"In a hurry."},
+{q:"___ fact, this is the best shot.",ans:"in",explan:"In fact."},
+{q:"___ contrast, the second photo is darker.",ans:"in",explan:"In contrast."},
+{q:"The colours look unnatural. The photo ___ have been edited.",ans:"might have",explan:"Posible edición."},
+{q:"He shoots insects every day. He ___ be interested in macro photography.",ans:"must",explan:"Deducción fuerte basada en hábitos."},
+{q:"The image is noisy. The ISO ___ have been too high.",ans:"must have",explan:"Deducción técnica."},
+{q:"The subject is tiny even with zoom. The lens ___ be telephoto.",ans:"might not",explan:"Deducción negativa presente."},
+{q:"She moved quickly across the studio because she was ___ a hurry.",ans:"in",explan:"Repetición: in a hurry."}
+];
+
+let index=0,score=0;
+const total=questions.length;
+
+function render(){
+const q=questions[index];
+document.getElementById('qCard').innerHTML=`
+<div class="card">
+<h3>${index+1}. ${q.q}</h3>
+<input id="answerInput" class="answer" placeholder="Escribe tu respuesta">
+<div id="fb" class="feedback"></div>
+</div>`;
+document.getElementById('progressTxt').innerText=`${index+1}/${total}`;
+document.getElementById('scoreTxt').innerText=score;
+}
+
+function check(){
+const user=document.getElementById('answerInput').value.trim().toLowerCase();
+const correct=questions[index].ans.toLowerCase();
+const fb=document.getElementById('fb');
+fb.classList.add('show');
+if(user===correct){
+score++;
+fb.innerHTML=`<strong style="color:green">¡Correcto!</strong><div class="explain">${questions[index].explan}</div>`;
+}else{
+fb.innerHTML=`<strong style="color:red">Incorrecto</strong><br>Respuesta: <em>${questions[index].ans}</em><div class="explain">${questions[index].explan}</div>`;
+}
+document.getElementById('scoreTxt').innerText=score;
+}
+
+function showAns(){
+const fb=document.getElementById('fb');
+fb.classList.add('show');
+fb.innerHTML=`<strong>Respuesta correcta:</strong> ${questions[index].ans}<div class="explain">${questions[index].explan}</div>`;
+}
+
+document.getElementById('startBtn').onclick=()=>{index=0;score=0;render()};
+document.getElementById('nextBtn').onclick=()=>{index=(index+1)%total;render()};
+document.getElementById('prevBtn').onclick=()=>{index=(index-1+total)%total;render()};
+document.getElementById('checkBtn').onclick=check;
+document.getElementById('showBtn').onclick=showAns;
+
+render();
+</script>
+</body>
+</html>
