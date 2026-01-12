@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modals of Deduction Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        .instructions {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        .instructions h2 {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        .instructions p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+        .exercise {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .exercise:hover {
+            background: #f5f5f5;
+        }
+        .exercise.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        .exercise.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        .sentence {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .verb-hint {
+            color: #667eea;
+            font-weight: bold;
+            font-style: italic;
+        }
+        input[type="text"] {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-width: 180px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .feedback {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 0.95em;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            color: #28a745;
+        }
+        .feedback.incorrect {
+            color: #dc3545;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #resetBtn {
+            background: #6c757d;
+        }
+        #resetBtn:hover {
+            background: #5a6268;
+        }
+        .score {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            color: #667eea;
+            font-weight: bold;
+            display: none;
+        }
+        .score.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Modals of Deduction Practice</h1>
+        
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <p>Complete the sentences using modals of deduction (must, might, may, could, can't, must have, might have, could have, can't have) with the verb provided in parentheses.</p>
+            <p><strong>Present deduction:</strong> must/might/may/could/can't + base verb</p>
+            <p><strong>Past deduction:</strong> must have/might have/could have/can't have + past participle</p>
+        </div>
+        
+        <div id="exercises"></div>
+        
+        <div class="button-container">
+            <button id="checkBtn">Check Answers</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+        
+        <div id="score" class="score"></div>
+    </div>
+
+    <script>
+        const exercises = [
+            { text: "She's not answering her phone. She ___ (be) in a meeting.", answer: "must be" },
+            { text: "I can't find my keys anywhere. I ___ (leave) them at work.", answer: "must have left" },
+            { text: "That ___ (not/be) John - he's in Australia right now.", answer: "can't be" },
+            { text: "They look very similar. They ___ (be) siblings.", answer: "might be" },
+            { text: "He ___ (not/hear) the doorbell because he was wearing headphones.", answer: "can't have heard" },
+            { text: "You ___ (be) exhausted after running a marathon!", answer: "must be" },
+            { text: "She ___ (forget) about our appointment. She's usually very punctual.", answer: "might have forgotten" },
+            { text: "That new restaurant ___ (be) expensive judging by the prices on the menu.", answer: "must be" },
+            { text: "He ___ (take) the wrong train. That's why he's late.", answer: "could have taken" },
+            { text: "They ___ (not/know) about the party. Nobody told them.", answer: "can't know" },
+            { text: "She's wearing a coat. It ___ (be) cold outside.", answer: "must be" },
+            { text: "I ___ (see) him yesterday, but I'm not sure. It was quite dark.", answer: "might have seen" },
+            { text: "You ___ (be) joking! That's impossible!", answer: "must be" },
+            { text: "He ___ (not/understand) the instructions. His work is completely wrong.", answer: "can't have understood" },
+            { text: "They ___ (go) home already. The lights are off.", answer: "might have gone" },
+            { text: "She's crying. She ___ (receive) bad news.", answer: "must have received" },
+            { text: "That ___ (not/be) the right answer. Try again.", answer: "can't be" },
+            { text: "He ___ (miss) the bus. That's why he walked.", answer: "could have missed" },
+            { text: "You ___ (be) hungry. You haven't eaten all day.", answer: "must be" },
+            { text: "She ___ (not/see) the message yet. She hasn't replied.", answer: "might not have seen" },
+            { text: "They're celebrating. They ___ (win) the competition.", answer: "must have won" },
+            { text: "It ___ (rain) last night. The ground is wet.", answer: "must have rained" },
+            { text: "He ___ (be) at home. His car is in the driveway.", answer: "could be" },
+            { text: "That ___ (not/be) true. I don't believe it.", answer: "can't be" },
+            { text: "She ___ (study) French before. Her pronunciation is quite good.", answer: "must have studied" },
+            { text: "They ___ (forget) to lock the door when they left.", answer: "might have forgotten" },
+            { text: "You ___ (be) tired after such a long flight.", answer: "must be" },
+            { text: "He ___ (not/finish) the project yet. It's too soon.", answer: "can't have finished" },
+            { text: "She ___ (be) the new manager everyone is talking about.", answer: "could be" },
+            { text: "They ___ (leave) early because of the traffic.", answer: "may have left" }
+        ];
+
+        const exercisesDiv = document.getElementById('exercises');
+        const checkBtn = document.getElementById('checkBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const scoreDiv = document.getElementById('score');
+
+        function createExercises() {
+            exercises.forEach((ex, index) => {
+                const exerciseDiv = document.createElement('div');
+                exerciseDiv.className = 'exercise';
+                exerciseDiv.innerHTML = `
+                    <div class="sentence">
+                        ${index + 1}. ${ex.text.split('___')[0]}
+                        <input type="text" id="input${index}">
+                        ${ex.text.split('___')[1]}
+                    </div>
+                    <div class="feedback" id="feedback${index}"></div>
+                `;
+                exercisesDiv.appendChild(exerciseDiv);
+            });
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            exercises.forEach((ex, index) => {
+                const input = document.getElementById(`input${index}`);
+                const feedback = document.getElementById(`feedback${index}`);
+                const exerciseDiv = input.closest('.exercise');
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = ex.answer.toLowerCase();
+                
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                    exerciseDiv.classList.remove('incorrect');
+                    exerciseDiv.classList.add('correct');
+                    feedback.className = 'feedback correct show';
+                    feedback.textContent = 'Correct!';
+                } else {
+                    exerciseDiv.classList.remove('correct');
+                    exerciseDiv.classList.add('incorrect');
+                    feedback.className = 'feedback incorrect show';
+                    feedback.textContent = `Incorrect. The correct answer is "${ex.answer}"`;
+                }
+            });
+            
+            scoreDiv.className = 'score show';
+            scoreDiv.textContent = `Your Score: ${correct}/${exercises.length} (${Math.round(correct/exercises.length*100)}%)`;
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetExercises() {
+            exercises.forEach((ex, index) => {
+                const input = document.getElementById(`input${index}`);
+                const feedback = document.getElementById(`feedback${index}`);
+                const exerciseDiv = input.closest('.exercise');
+                
+                input.value = '';
+                feedback.className = 'feedback';
+                feedback.textContent = '';
+                exerciseDiv.classList.remove('correct', 'incorrect');
+            });
+            scoreDiv.className = 'score';
+            scoreDiv.textContent = '';
+        }
+
+        createExercises();
+        checkBtn.addEventListener('click', checkAnswers);
+        resetBtn.addEventListener('click', resetExercises);
+    </script>
+</body>
+</html>
